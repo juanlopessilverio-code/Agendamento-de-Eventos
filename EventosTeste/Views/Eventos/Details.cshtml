@@ -1,0 +1,483 @@
+﻿@model EventosTeste.Models.Evento
+@{
+    ViewData["Title"] = "Detalhes do Evento";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        min-height: 100vh;
+        color: #333;
+        padding: 2rem 0;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+    }
+
+    .btn-back {
+        position: absolute;
+        top: 0;
+        left: 2rem;
+        padding: 0.75rem 1.5rem;
+        background: white;
+        color: #1e3c72;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+        }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+    .details-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        position: relative;
+    }
+
+        .details-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 20px 20px 0 0;
+        }
+
+    .details-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        font-size: 1.5rem;
+        color: white;
+        box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+    }
+
+    .event-title {
+        text-align: center;
+        font-size: 2rem;
+        color: #1e3c72;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .event-status {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .badge-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+    }
+
+    .badge-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: white;
+    }
+
+    .badge-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .detail-group {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        border-left: 4px solid #1e3c72;
+    }
+
+    .detail-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        color: #1e3c72;
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+        .detail-label i {
+            font-size: 1.2rem;
+        }
+
+    .detail-value {
+        color: #333;
+        font-size: 1.1rem;
+        padding-left: 1.8rem;
+        word-wrap: break-word;
+    }
+
+    .description-section {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+        .description-section h3 {
+            color: #1e3c72;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+    .description-text {
+        color: #555;
+        line-height: 1.8;
+        font-size: 1.05rem;
+        white-space: pre-wrap;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        border-left: 5px solid #2196F3;
+    }
+
+        .info-box i {
+            color: #1976D2;
+            font-size: 1.3rem;
+            margin-right: 0.5rem;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #1565C0;
+            font-weight: 500;
+        }
+
+    .actions-section {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e0e0e0;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 1rem 2.5rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        flex: 1;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(30, 60, 114, 0.6);
+        }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: white;
+        flex: 1;
+    }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 193, 7, 0.6);
+        }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+        flex: 1;
+    }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(220, 53, 69, 0.6);
+        }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+    footer {
+        background: rgba(0, 0, 0, 0.2);
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 4rem;
+    }
+
+    .empty-value {
+        color: #999;
+        font-style: italic;
+    }
+
+    .datetime-display {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .date-part {
+        font-weight: 600;
+    }
+
+    .time-part {
+        color: #666;
+        font-size: 0.95rem;
+    }
+</style>
+
+<div class="container">
+    <a asp-action="Index" class="btn-back">
+        <i class="fas fa-arrow-left"></i>
+        Voltar
+    </a>
+
+    <div class="page-header">
+        <h1><i class="fas fa-calendar-check"></i> Detalhes do Evento</h1>
+        <p>Informações completas sobre o evento</p>
+    </div>
+
+    <div class="details-card">
+        <div class="details-icon">
+            <i class="fas fa-calendar-alt"></i>
+        </div>
+
+        <h2 class="event-title">@Html.DisplayFor(model => model.Nome_Evento)</h2>
+
+        c<div class="event-status">
+            @{
+                var dataAtual = DateTime.Now;
+                var statusClass = "";
+                var statusText = "";
+
+                if (Model.Data_Inicial > dataAtual)
+                {
+                    statusClass = "badge-success";
+                    statusText = "Evento Agendado";
+                }
+                else if (Model.Data_Inicial <= dataAtual && Model.Data_Final >= dataAtual)
+                {
+                    statusClass = "badge-warning";
+                    statusText = "Em Andamento";
+                }
+                else
+                {
+                    statusClass = "badge-danger";
+                    statusText = "Evento Finalizado";
+                }
+            }
+            <span class="badge @statusClass">
+                <i class="fas fa-circle" style="font-size: 0.6rem;"></i> @statusText
+            </span>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Descricao))
+        {
+            <div class="description-section">
+                <h3>
+                    <i class="fas fa-align-left"></i>
+                    Descrição
+                </h3>
+                <div class="description-text">@Html.DisplayFor(model => model.Descricao)</div>
+            </div>
+        }
+
+        <div class="details-grid">
+            <div class="detail-group">
+                <div class="detail-label">
+                    <i class="far fa-calendar"></i>
+                    Data e Hora Inicial
+                </div>
+                <div class="detail-value">
+                    @if (Model.Data_Inicial != default(DateTime))
+                    {
+                        <div class="datetime-display">
+                            <span class="date-part">@Model.Data_Inicial.ToString("dd/MM/yyyy")</span>
+                            <span class="time-part">às @Model.Data_Inicial.ToString("HH:mm")</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="empty-value">Não informado</span>
+                    }
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <div class="detail-label">
+                    <i class="far fa-calendar-times"></i>
+                    Data e Hora Final
+                </div>
+                <div class="detail-value">
+                    @if (Model.Data_Final != default(DateTime))
+                    {
+                        <div class="datetime-display">
+                            <span class="date-part">@Model.Data_Final.ToString("dd/MM/yyyy")</span>
+                            <span class="time-part">às @Model.Data_Final.ToString("HH:mm")</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="empty-value">Não informado</span>
+                    }
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <div class="detail-label">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Local do Evento
+                </div>
+                <div class="detail-value">
+                    @if (Model.Local != null && Model.Local > 0)
+                    {
+                        @Html.DisplayFor(model => model.Local)
+                    }
+                    else
+                    {
+                        <span class="empty-value">Local não definido</span>
+                    }
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <div class="detail-label">
+                    <i class="fas fa-clock"></i>
+                    Duração
+                </div>
+                <div class="detail-value">
+                    @if (Model.Data_Inicial != default(DateTime) && Model.Data_Final != default(DateTime))
+                    {
+                        var duracao = Model.Data_Final - Model.Data_Inicial;
+                        if (duracao.Days > 0)
+                        {
+                            <span>@duracao.Days dia(s) e @duracao.Hours hora(s)</span>
+                        }
+                        else if (duracao.Hours > 0)
+                        {
+                            <span>@duracao.Hours hora(s) e @duracao.Minutes minuto(s)</span>
+                        }
+                        else
+                        {
+                            <span>@duracao.Minutes minuto(s)</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="empty-value">Não calculado</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <p>Este evento foi cadastrado no sistema. Você pode editar as informações ou excluir o evento usando os botões abaixo.</p>
+        </div>
+
+        <div class="actions-section">
+            <a asp-action="Edit" asp-route-id="@Model.IdEvento" class="btn btn-warning">
+                <i class="fas fa-edit"></i>
+                Editar Evento
+            </a>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-list"></i>
+                Lista de Eventos
+            </a>
+
+            <form asp-action="Delete" asp-route-id="@Model.IdEvento" method="post" style="flex: 1; display: contents;"
+                  onsubmit="return confirm('Tem certeza que deseja excluir este evento?');">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i>
+                    Excluir Evento
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer>
+    © 2025 - Sistema de Agendamento de Eventos
+</footer>

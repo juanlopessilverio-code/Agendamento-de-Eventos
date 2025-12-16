@@ -1,0 +1,325 @@
+﻿@model EventosTeste.Models.Evento
+@{
+    ViewData["Title"] = "Criar Evento";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        min-height: 100vh;
+        color: #333;
+        padding: 2rem 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+    }
+
+    .btn-back {
+        position: absolute;
+        top: 0;
+        left: 2rem;
+        padding: 0.75rem 1.5rem;
+        background: white;
+        color: #1e3c72;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+        }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        position: relative;
+    }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 20px 20px 0 0;
+        }
+
+    .form-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        font-size: 1.5rem;
+        color: white;
+        box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+        }
+
+        .form-control:hover {
+            border-color: #2a5298;
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    select.form-control {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        padding-right: 2.5rem;
+    }
+
+    .text-danger {
+        color: #e74c3c;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: block;
+    }
+
+    .input-with-icon {
+        position: relative;
+    }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .input-with-icon .form-control {
+            padding-left: 2.5rem;
+        }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .form-check-label {
+        cursor: pointer;
+        margin: 0;
+        font-weight: 500;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .btn {
+        padding: 1rem 2.5rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        flex: 1;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(30, 60, 114, 0.6);
+        }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+    footer {
+        background: rgba(0, 0, 0, 0.2);
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 4rem;
+    }
+</style>
+
+<div class="container">
+    <a asp-action="Index" class="btn-back">
+        <i class="fas fa-arrow-left"></i>
+        Voltar
+    </a>
+
+    <div class="page-header">
+        <h1><i class="fas fa-calendar-plus"></i> Criar Novo Evento</h1>
+        <p>Preencha os dados para cadastrar um novo evento</p>
+    </div>
+
+    <div class="form-card">
+        <div class="form-icon">
+            <i class="fas fa-calendar-alt"></i>
+        </div>
+
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Nome_Evento" class="control-label">Nome do Evento</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-heading"></i>
+                    <input asp-for="Nome_Evento" class="form-control" placeholder="Ex: Palestra Sobre Tecnologia" />
+                </div>
+                <span asp-validation-for="Nome_Evento" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label">Descrição</label>
+                <textarea asp-for="Descricao" class="form-control" placeholder="Descreva os detalhes do evento..."></textarea>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Data_Inicial" class="control-label">Data e Hora Inicial</label>
+                <div class="input-with-icon">
+                    <i class="far fa-clock"></i>
+                    <input asp-for="Data_Inicial" class="form-control" type="datetime-local" />
+                </div>
+                <span asp-validation-for="Data_Inicial" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Data_Final" class="control-label">Data e Hora Final</label>
+                <div class="input-with-icon">
+                    <i class="far fa-clock"></i>
+                    <input asp-for="Data_Final" class="form-control" type="datetime-local" />
+                </div>
+                <span asp-validation-for="Data_Final" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Local" class="control-label">Local</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <select asp-for="Local" class="form-control"
+                            asp-items="@(new SelectList(ViewBag.Locais, "IdLocal", "Nome"))">
+                        <option value="">Selecione um local</option>
+                    </select>
+                </div>
+                <span asp-validation-for="Local" class="text-danger"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Cadastrar Evento
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    © 2025 - Sistema de Agendamento de Eventos
+</footer>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

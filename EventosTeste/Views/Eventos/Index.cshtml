@@ -1,0 +1,429 @@
+﻿@model IEnumerable<EventosTeste.Models.Evento>
+@{
+    ViewData["Title"] = "Eventos";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        min-height: 100vh;
+        color: #333;
+        padding: 2rem 0;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+    }
+
+    .btn-back {
+        position: fixed;
+        top: 2rem;
+        left: 2rem;
+        padding: 0.75rem 1.5rem;
+        background: white;
+        color: #1e3c72;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+        }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        margin-top: 5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .page-title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-title .icon-circle {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #1e3c72;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-new {
+        padding: 1rem 2rem;
+        background: white;
+        color: #1e3c72;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-new:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+        }
+
+    .search-bar {
+        background: white;
+        padding: 1rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+            .search-bar input:focus {
+                outline: none;
+                border-color: #1e3c72;
+            }
+
+    .eventos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .evento-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        transition: all 0.4s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .evento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .evento-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+        }
+
+    .evento-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1.5rem;
+    }
+
+    .evento-title {
+        font-size: 1.5rem;
+        color: #1e3c72;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .evento-status {
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-ativo {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-cancelado {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .status-concluido {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .evento-info {
+        margin-bottom: 1rem;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        color: #666;
+    }
+
+        .info-row i {
+            width: 20px;
+            color: #1e3c72;
+        }
+
+    .evento-description {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .evento-actions {
+        display: flex;
+        gap: 0.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .btn-action {
+        flex: 1;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-edit {
+        background: #ffc107;
+        color: #000;
+    }
+
+        .btn-edit:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+        }
+
+    .btn-details {
+        background: #17a2b8;
+        color: white;
+    }
+
+        .btn-details:hover {
+            background: #138496;
+            transform: translateY(-2px);
+        }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+
+        .btn-delete:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+    footer {
+        background: rgba(0, 0, 0, 0.2);
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 4rem;
+    }
+</style>
+
+<div class="container">
+    <a href="/" class="btn-back">
+        <i class="fas fa-home"></i>
+        Voltar para Home
+    </a>
+
+    <div class="page-header">
+        <div class="page-title">
+            <div class="icon-circle">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h1>Eventos</h1>
+        </div>
+        <a asp-action="Create" class="btn-new">
+            <i class="fas fa-plus"></i>
+            Novo Evento
+        </a>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search" style="color: #999;"></i>
+        <input type="text" id="searchInput" placeholder="Pesquisar eventos...">
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="eventos-grid" id="eventosGrid">
+            @foreach (var item in Model)
+            {
+                var searchText = (item.Nome_Evento + " " + item.Descricao + " " + item.NomeLocal).ToLower();
+
+                <div class="evento-card" data-search="@searchText">
+                    <div class="evento-header">
+                        <div>
+                            <div class="evento-title">@item.Nome_Evento</div>
+                        </div>
+                    </div>
+
+                    <div class="evento-info">
+                        <div class="info-row">
+                            <i class="far fa-calendar"></i>
+                            <span><strong>Início:</strong> @item.Data_Inicial.ToString("dd/MM/yyyy HH:mm")</span>
+                        </div>
+                        <div class="info-row">
+                            <i class="far fa-calendar-check"></i>
+                            <span><strong>Fim:</strong> @item.Data_Final.ToString("dd/MM/yyyy HH:mm")</span>
+                        </div>
+                        <div class="info-row">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>@item.NomeLocal</span>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(item.Descricao))
+                    {
+                        <div class="evento-description">
+                            @item.Descricao
+                        </div>
+                    }
+
+                    <div class="evento-actions">
+                        <a asp-action="Edit" asp-route-id="@item.IdEvento" class="btn-action btn-edit">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.IdEvento" class="btn-action btn-details">
+                            <i class="fas fa-info-circle"></i> Detalhes
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.IdEvento" class="btn-action btn-delete">
+                            <i class="fas fa-trash"></i> Excluir
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="far fa-calendar-times"></i>
+            <h3>Nenhum evento cadastrado</h3>
+            <p>Comece criando seu primeiro evento clicando no botão acima.</p>
+            <a asp-action="Create" class="btn-new">
+                <i class="fas fa-plus"></i>
+                Criar Primeiro Evento
+            </a>
+        </div>
+    }
+</div>
+
+<footer>
+    © 2025 - Sistema de Agendamento de Eventos
+</footer>
+
+<script>
+   
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.evento-card');
+
+        cards.forEach(card => {
+            const searchData = card.getAttribute('data-search');
+            if (searchData.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
+   
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (!confirm('Tem certeza que deseja excluir este evento?')) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>

@@ -1,0 +1,266 @@
+﻿
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Sistema de Agendamento</title>
+   
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+            .nav-links a {
+                text-decoration: none;
+                color: #333;
+                font-weight: 500;
+                transition: all 0.3s;
+            }
+
+                .nav-links a:hover {
+                    color: #1e3c72;
+                }
+
+        .hero {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+            .hero h1 {
+                font-size: 4rem;
+                color: white;
+                margin-bottom: 1.5rem;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+
+            .hero p {
+                font-size: 1.3rem;
+                color: rgba(255, 255, 255, 0.95);
+                margin-bottom: 3rem;
+            }
+
+        .cards-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s;
+            position: relative;
+        }
+
+            .card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 5px;
+                background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            }
+
+            .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 25px rgba(30, 60, 114, 0.6);
+            }
+
+        .features {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            transition: all 0.3s;
+        }
+
+            .feature:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: scale(1.05);
+            }
+
+            .feature i {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .feature h3 {
+                margin-bottom: 0.5rem;
+                font-size: 1.3rem;
+            }
+
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">UGB</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/Locais">Locais</a></li>
+                <li><a href="/Eventos">Eventos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Sistema de Agendamento de Eventos</h1>
+        <p>Gerencie seus eventos e locais de forma simples e profissional</p>
+    </div>
+
+    <div class="cards-container">
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h2>Locais</h2>
+            <p>Cadastre e gerencie os locais disponíveis para seus eventos. Mantenha informações detalhadas sobre capacidade, endereço e recursos.</p>
+            <a href="/Locais" class="btn">Ver Locais</a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h2>Eventos</h2>
+            <p>Crie, agende e acompanhe todos os seus eventos. Gerencie datas, horários e vinculação com locais de forma intuitiva.</p>
+            <a href="/Eventos" class="btn">Ver Eventos</a>
+        </div>
+    </div>
+
+    <div class="features">
+        <div class="feature">
+            <i class="fas fa-clock"></i>
+            <h3>Rápido</h3>
+            <p>Interface ágil e responsiva</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Seguro</h3>
+            <p>Dados protegidos</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-mobile-alt"></i>
+            <h3>Responsivo</h3>
+            <p>Acesse de qualquer dispositivo</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-chart-line"></i>
+            <h3>Organizado</h3>
+            <p>Gestão eficiente de eventos</p>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 - Sistema de Agendamento de Eventos
+    </footer>
+</body>
+</html>

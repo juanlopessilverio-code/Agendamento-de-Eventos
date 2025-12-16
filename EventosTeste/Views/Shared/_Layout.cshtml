@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EventosTeste</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/EventosTeste.styles.css" asp-append-version="true" />
+
+    <style>
+        .navbar {
+            background: #f8f9fa;
+            border-bottom: 2px solid #e5e5e5;
+            padding: 0.75rem 1rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            margin-right: 1rem;
+            transition: .2s ease;
+        }
+
+        .nav-link:hover {
+            color: #0d6efd !important;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+ <body>
+    @* <header>
+        <nav class="navbar navbar-expand-sm navbar-light box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EventosTeste</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+
+                        <!-- Links adicionados -->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Locais" asp-action="Index">Locais</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Eventos" asp-action="Index">Eventos</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header> *@
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+@*     <footer class="border-top footer text-muted mt-4 py-3">
+        <div class="container text-center">
+            &copy; 2025 - EventosTeste
+        </div>
+    </footer> *@
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
