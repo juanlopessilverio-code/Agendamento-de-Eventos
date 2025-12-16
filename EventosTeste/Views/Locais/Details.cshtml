@@ -3,6 +3,7 @@
     ViewData["Title"] = "Detalhes do Local";
 }
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
     * {
         margin: 0;
@@ -102,27 +103,12 @@
         font-size: 2rem;
         color: #1e3c72;
         font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-
-    .local-status {
-        text-align: center;
         margin-bottom: 2rem;
-    }
-
-    .badge {
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
     }
 
     .details-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
         margin-bottom: 2rem;
     }
@@ -154,42 +140,6 @@
         padding-left: 1.8rem;
         word-wrap: break-word;
     }
-
-    .map-section {
-        background: #f8f9fa;
-        padding: 2rem;
-        border-radius: 15px;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-
-        .map-section h3 {
-            color: #1e3c72;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-    .map-placeholder {
-        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-        height: 300px;
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        color: #1565C0;
-        font-size: 3rem;
-    }
-
-        .map-placeholder p {
-            font-size: 1rem;
-            font-weight: 600;
-        }
 
     .info-box {
         background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
@@ -290,41 +240,6 @@
         color: #999;
         font-style: italic;
     }
-
-    .cep-display {
-        font-family: 'Courier New', monospace;
-        font-size: 1.2rem;
-        font-weight: 600;
-        letter-spacing: 1px;
-    }
-
-    .stats-mini {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .stat-mini {
-        background: white;
-        padding: 1rem 1.5rem;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .stat-mini-number {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1e3c72;
-    }
-
-    .stat-mini-label {
-        font-size: 0.85rem;
-        color: #666;
-        margin-top: 0.25rem;
-    }
 </style>
 
 <div class="container">
@@ -335,47 +250,26 @@
 
     <div class="page-header">
         <h1><i class="fas fa-map-marked-alt"></i> Detalhes do Local</h1>
-        <p>Informações completas sobre o local cadastrado</p>
+        <p>Informações completas sobre o local</p>
     </div>
 
     <div class="details-card">
         <div class="details-icon">
-            <i class="fas fa-building"></i>
+            <i class="fas fa-map-marker-alt"></i>
         </div>
 
         <h2 class="local-title">@Html.DisplayFor(model => model.Nome)</h2>
 
-        <div class="local-status">
-            <span class="badge">
-                <i class="fas fa-check-circle" style="font-size: 0.8rem;"></i> Local Ativo
-            </span>
-        </div>
-
-        <div class="stats-mini">
-            <div class="stat-mini">
-                <div class="stat-mini-number">0</div>
-                <div class="stat-mini-label">Eventos Agendados</div>
-            </div>
-            <div class="stat-mini">
-                <div class="stat-mini-number">0</div>
-                <div class="stat-mini-label">Eventos Realizados</div>
-            </div>
-            <div class="stat-mini">
-                <div class="stat-mini-number">-</div>
-                <div class="stat-mini-label">Capacidade</div>
-            </div>
-        </div>
-
-        <div class="details-grid" style="margin-top: 2rem;">
+        <div class="details-grid">
             <div class="detail-group">
                 <div class="detail-label">
-                    <i class="fas fa-signature"></i>
+                    <i class="fas fa-building"></i>
                     Nome do Local
                 </div>
                 <div class="detail-value">
-                    @if (!string.IsNullOrWhiteSpace(Model.Nome))
+                    @if (!string.IsNullOrEmpty(Model.Nome))
                     {
-                        @Html.DisplayFor(model => model.Nome)
+                        @Model.Nome
                     }
                     else
                     {
@@ -390,9 +284,9 @@
                     CEP
                 </div>
                 <div class="detail-value">
-                    @if (!string.IsNullOrWhiteSpace(Model.Cep))
+                    @if (!string.IsNullOrEmpty(Model.Cep))
                     {
-                        <span class="cep-display">@Html.DisplayFor(model => model.Cep)</span>
+                        @Model.Cep
                     }
                     else
                     {
@@ -400,46 +294,11 @@
                     }
                 </div>
             </div>
-
-            <div class="detail-group">
-                <div class="detail-label">
-                    <i class="fas fa-hashtag"></i>
-                    ID do Local
-                </div>
-                <div class="detail-value">
-                    #@Html.DisplayFor(model => model.IdLocal)
-                </div>
-            </div>
-
-            <div class="detail-group">
-                <div class="detail-label">
-                    <i class="fas fa-calendar-plus"></i>
-                    Data de Cadastro
-                </div>
-                <div class="detail-value">
-                    @DateTime.Now.ToString("dd/MM/yyyy")
-                </div>
-            </div>
         </div>
-
-        @if (!string.IsNullOrWhiteSpace(Model.Cep))
-        {
-            <div class="map-section">
-                <h3>
-                    <i class="fas fa-map-marked-alt"></i>
-                    Localização
-                </h3>
-                <div class="map-placeholder">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <p>CEP: @Model.Cep</p>
-                    <small style="font-size: 0.9rem; opacity: 0.8;">Visualização de mapa disponível em breve</small>
-                </div>
-            </div>
-        }
 
         <div class="info-box">
             <i class="fas fa-info-circle"></i>
-            <p>Este local está cadastrado e disponível para agendamento de eventos. Você pode editar as informações ou excluir o local usando os botões abaixo.</p>
+            <p>Este local foi cadastrado no sistema. Você pode editar as informações ou excluir o local usando os botões abaixo.</p>
         </div>
 
         <div class="actions-section">
@@ -454,7 +313,7 @@
             </a>
 
             <form asp-action="Delete" asp-route-id="@Model.IdLocal" method="post" style="flex: 1; display: contents;"
-                  onsubmit="return confirm('Tem certeza que deseja excluir este local? Esta ação não pode ser desfeita.');">
+                  onsubmit="return confirm('Tem certeza que deseja excluir este local?');">
                 <button type="submit" class="btn btn-danger">
                     <i class="fas fa-trash-alt"></i>
                     Excluir Local

@@ -3,6 +3,7 @@
     ViewData["Title"] = "Excluir Local";
 }
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
     * {
         margin: 0;
@@ -84,54 +85,85 @@
         }
 
     .delete-icon {
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
         background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 2rem;
-        font-size: 1.5rem;
+        font-size: 2rem;
         color: white;
-        box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
+        box-shadow: 0 8px 20px rgba(220, 53, 69, 0.5);
     }
 
-    .warning-message {
+    .warning-box {
         background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
         border-left: 5px solid #ffc107;
-        padding: 1.25rem 1.5rem;
-        border-radius: 10px;
+        padding: 1.5rem;
+        border-radius: 15px;
         margin-bottom: 2rem;
-        color: #856404;
-        font-weight: 600;
-        text-align: center;
     }
 
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-        .form-group label {
-            display: block;
+        .warning-box h3 {
+            color: #856404;
+            font-size: 1.2rem;
             margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 600;
-            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-    .form-control {
-        width: 100%;
-        padding: 0.875rem 1rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        font-size: 1rem;
+        .warning-box p {
+            color: #856404;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+    .local-info {
         background: #f8f9fa;
-        color: #666;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
     }
 
-    .form-actions {
+        .local-info h3 {
+            color: #1e3c72;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+    .info-row {
+        display: flex;
+        padding: 1rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-label {
+        font-weight: 600;
+        color: #666;
+        min-width: 150px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .info-label i {
+            color: #1e3c72;
+        }
+
+    .info-value {
+        color: #333;
+        flex: 1;
+    }
+
+    .actions-section {
         display: flex;
         gap: 1rem;
         margin-top: 2.5rem;
@@ -152,12 +184,12 @@
         align-items: center;
         gap: 0.5rem;
         justify-content: center;
+        flex: 1;
     }
 
     .btn-danger {
         background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
         color: white;
-        flex: 1;
     }
 
         .btn-danger:hover {
@@ -191,41 +223,63 @@
     </a>
 
     <div class="page-header">
-        <h1><i class="fas fa-trash-alt"></i> Excluir Local</h1>
-        <p>Tem certeza que deseja excluir este local?</p>
+        <h1><i class="fas fa-exclamation-triangle"></i> Excluir Local</h1>
+        <p>Confirme a exclusão do local</p>
     </div>
 
     <div class="delete-card">
         <div class="delete-icon">
-            <i class="fas fa-exclamation-triangle"></i>
+            <i class="fas fa-trash-alt"></i>
         </div>
 
-        <div class="warning-message">
-            ⚠️ Atenção! Esta ação não pode ser desfeita.
+        <div class="warning-box">
+            <h3>
+                <i class="fas fa-exclamation-circle"></i>
+                Atenção!
+            </h3>
+            <p>
+                Você está prestes a excluir este local permanentemente.
+                Esta ação não pode ser desfeita. Por favor, revise as informações abaixo antes de confirmar.
+            </p>
         </div>
 
-        <form asp-action="Delete" id="deleteForm">
+        <div class="local-info">
+            <h3>Informações do Local</h3>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="fas fa-building"></i>
+                    Nome:
+                </div>
+                <div class="info-value">
+                    @Html.DisplayFor(model => model.Nome)
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="fas fa-map-pin"></i>
+                    CEP:
+                </div>
+                <div class="info-value">
+                    @Html.DisplayFor(model => model.Cep)
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post">
             <input type="hidden" asp-for="IdLocal" />
 
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label">Nome do Local</label>
-                <input asp-for="Nome" class="form-control" readonly />
-            </div>
+            <div class="actions-section">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-check"></i>
+                    Confirmar Exclusão
+                </button>
 
-            <div class="form-group">
-                <label asp-for="Cep" class="control-label">CEP</label>
-                <input asp-for="Cep" class="form-control" readonly />
-            </div>
-
-            <div class="form-actions">
                 <a asp-action="Index" class="btn btn-secondary">
                     <i class="fas fa-times"></i>
                     Cancelar
                 </a>
-                <button type="button" class="btn btn-danger" onclick="confirmarExclusao()">
-                    <i class="fas fa-trash-alt"></i>
-                    Excluir Local
-                </button>
             </div>
         </form>
     </div>
@@ -234,21 +288,3 @@
 <footer>
     © 2025 - Sistema de Agendamento de Eventos
 </footer>
-
-<script>
-    function confirmarExclusao() {
-        const confirmar = confirm(
-            '⚠️ ATENÇÃO\n\n' +
-            'Tem certeza que deseja excluir este local?\n\n' +
-            '❌ Esta ação não pode ser desfeita!\n\n' +
-            'Clique em OK para confirmar a exclusão.'
-        );
-
-        if (confirmar) {
-            const btn = event.target;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Excluindo...';
-            document.getElementById('deleteForm').submit();
-        }
-    }
-</script>
