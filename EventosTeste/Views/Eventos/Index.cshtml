@@ -405,7 +405,7 @@
 </footer>
 
 <script>
-    // Funcionalidade de busca
+
     document.getElementById('searchInput').addEventListener('input', function(e) {
         const searchTerm = e.target.value.toLowerCase();
         const cards = document.querySelectorAll('.evento-card');
@@ -420,12 +420,139 @@
         });
     });
 
-    // Confirmação de exclusão
+ 
     document.querySelectorAll('.btn-delete').forEach(button => {
         button.addEventListener('click', function(e) {
             if (!confirm('Tem certeza que deseja excluir este evento?')) {
                 e.preventDefault();
             }
         });
+    });
+</script>
+
+
+<div class="modal-overlay" id="deleteModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+        <div class="modal-header">
+            <div id="deleteTitle"><strong>Confirmar exclusão</strong></div>
+            <button type="button" class="modal-close" id="deleteClose" aria-label="Fechar">×</button>
+        </div>
+        <div class="modal-body">
+            <p>Você está prestes a excluir o evento:</p>
+            <ul>
+                <li><strong>Nome:</strong> <span id="delNome">-</span></li>
+                <li><strong>Local:</strong> <span id="delLocal">-</span></li>
+                <li><strong>Início:</strong> <span id="delIni">-</span></li>
+                <li><strong>Fim:</strong> <span id="delFim">-</span></li>
+            </ul>
+            <p style="margin-top: .75rem; color: #666;">Esta ação não pode ser desfeita.</p>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn-modal btn-cancel" id="deleteCancel">Cancelar</button>
+            <button type="button" class="btn-modal btn-confirm" id="deleteConfirm">Excluir</button>
+        </div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.evento-card');
+
+        cards.forEach(card => {
+            const searchData = card.getAttribute('data-search');
+            card.style.display = searchData.includes(searchTerm) ? 'block' : 'none';
+        });
+    });
+
+    const modal = document.getElementById('deleteModal');
+    const closeBtn = document.getElementById('deleteClose');
+    const cancelBtn = document.getElementById('deleteCancel');
+    const confirmBtn = document.getElementById('deleteConfirm');
+
+    const delNome = document.getElementById('delNome');
+    const delLocal = document.getElementById('delLocal');
+    const delIni = document.getElementById('delIni');
+    const delFim = document.getElementById('delFim');
+
+    let currentId = null;
+
+    function openModal() {
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        currentId = null;
+        delNome.textContent = '-';
+        delLocal.textContent = '-';
+        delIni.textContent = '-';
+        delFim.textContent = '-';
+        confirmBtn.disabled = false;
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+    });
+
+    function fmtDate(value) {
+        if (!value) return '-';
+        const d = new Date(value);
+        if (isNaN(d.getTime())) return String(value);
+        return d.toLocaleString('pt-BR');
+    }
+
+    document.querySelectorAll('.js-open-delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id = btn.getAttribute('data-id');
+            currentId = id;
+
+            const resp = await fetch(`@Url.Action("GetDeleteInfo", "Eventos")?id=${encodeURIComponent(id)}`);
+            if (!resp.ok) {
+                alert('Não foi possível carregar os dados para exclusão.');
+                return;
+            }
+            const data = await resp.json();
+
+            delNome.textContent = data.nome ?? '-';
+            delLocal.textContent = data.nomeLocal ?? '-';
+            delIni.textContent = fmtDate(data.dataInicial);
+            delFim.textContent = fmtDate(data.dataFinal);
+
+            openModal();
+        });
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+        if (!currentId) return;
+        confirmBtn.disabled = true;
+
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+        const resp = await fetch(`@Url.Action("DeleteFromModal", "Eventos")`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'RequestVerificationToken': token
+            },
+            body: new URLSearchParams({ id: currentId })
+        });
+
+        if (!resp.ok) {
+            confirmBtn.disabled = false;
+            alert('Falha ao excluir.');
+            return;
+        }
+
+        window.location.reload();
     });
 </script>
